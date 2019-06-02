@@ -4,6 +4,10 @@ class TestsController < Simpler::Controller
     @time = Time.now
   end
 
+  def show
+    @id = params[:id]
+  end
+
   def text
     render plain: 'Plain text response'
   end

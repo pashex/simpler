@@ -5,11 +5,12 @@ module Simpler
 
     attr_reader :name, :request, :response, :headers
 
-    def initialize(env)
+    def initialize(env, route_params)
       @name = extract_name
       @request = Rack::Request.new(env)
       @response = Rack::Response.new
       @headers = {}
+      @route_params = route_params
     end
 
     def make_response(action)
@@ -45,7 +46,7 @@ module Simpler
     end
 
     def params
-      @request.params
+      @request.params.merge(@route_params)
     end
 
     def render(options)

@@ -30,7 +30,8 @@ module Simpler
       route = @router.route_for(env)
       return not_found unless route
 
-      controller = route.controller.new(env)
+      path = env['PATH_INFO']
+      controller = route.controller.new(env, route.params(path))
       action = route.action
 
       make_response(controller, action)
