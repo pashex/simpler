@@ -18,8 +18,11 @@ module Simpler
       @request.env['simpler.action'] = action
 
       set_default_headers
+
       send(action)
       write_response
+
+      set_information_headers(action)
       @headers.each { |key, value| @response[key] = value }
 
       @response.finish
@@ -33,6 +36,12 @@ module Simpler
 
     def set_default_headers
       @headers['Content-Type'] = 'text/html'
+    end
+
+    def set_information_headers(action)
+      @headers['X-Simpler-Controller'] = self.class.name
+      @headers['X-Simpler-Action'] = action
+      @headers['X-Simpler-View'] = "#{@request.env['simpler.template'] || [name, action].join('/')}.html.erb"
     end
 
     def write_response
